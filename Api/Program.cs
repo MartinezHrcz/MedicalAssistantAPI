@@ -1,10 +1,14 @@
 using Api.DB;
+using Api.Repositories;
+using Api.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IPatientRepository, PatientRepositroy>();
+builder.Services.AddScoped<IPatientService, PatientService>();
 
 builder.Services.AddDbContext<MedicalDataContext>(
     options =>
