@@ -14,7 +14,7 @@ public record PatientDto(
 public record CreatePatientDto(
     [property: Required, MaxLength(50)]
     string Name,
-    [property:Required, RegularExpression(@"^\d{3}-\d{3}-\d{3}$", ErrorMessage = "Taj must be in 000-000-000 format!")]
+    [property:Required,MaxLength(12), RegularExpression(@"^\d{3}-\d{3}-\d{3}$", ErrorMessage = "Taj must be in 000-000-000 format!")]
     string Taj,
     string? Address,
     string? Complaints
@@ -23,7 +23,7 @@ public record CreatePatientDto(
 public record UpdatePatientDto(
     [property:Required, MaxLength(50)]
     string Name,
-    [property:Required,  RegularExpression(@"^\d{3}-\d{3}-\d{3}$", ErrorMessage = "Taj must be in 000-000-000 format!")]
+    [property:Required, MaxLength(12), RegularExpression(@"^\d{3}-\d{3}-\d{3}$", ErrorMessage = "Taj must be in 000-000-000 format!")]
     string Taj,
     string? Address,
     string? Complaints

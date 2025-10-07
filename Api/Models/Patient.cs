@@ -15,6 +15,7 @@ public class Patient
     public string? Address { get; set; }
 
     [Required]
+    [MaxLength(12)]
     [RegularExpression(@"^\d{3}-\d{3}-\d{3}$")]
     public string Taj { get; set; } = null!;
 
