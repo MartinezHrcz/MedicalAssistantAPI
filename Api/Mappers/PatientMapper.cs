@@ -16,6 +16,11 @@ public class PatientMapper
             patient.TimeOfAdmission
             );
     }
+    
+    public static IEnumerable<PatientDto> ToDtos(IEnumerable<Patient> patients)
+    {
+        return patients.Select(p => ToDTO(p));
+    }
 
     public static Patient ToEntity(CreatePatientDto dto)
     {
@@ -28,8 +33,16 @@ public class PatientMapper
         };
     }
 
-    public static IEnumerable<PatientDto> ToDtos(IEnumerable<Patient> patients)
+    public static Patient CreateEntity(CreatePatientDto dto)
     {
-        return patients.Select(p => ToDTO(p));
+        return new Patient
+        {
+            Name = dto.Name,
+            Address = dto.Address,
+            Taj = dto.Taj,
+            Complaints = dto.Complaints
+        };
     }
+
+
 }
