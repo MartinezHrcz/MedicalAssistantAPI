@@ -28,7 +28,6 @@
     <ItemGroup>
       <Folder Include="Controllers\" />
       <Folder Include="Mappers\" />
-      <Folder Include="Repositories\" />
       <Folder Include="Services\" />
     </ItemGroup>
 
