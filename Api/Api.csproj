@@ -16,17 +16,20 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.9" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.9">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
         <PackageReference Include="SQLitePCLRaw.core" Version="3.0.2" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
     </ItemGroup>
-
+    
     <ItemGroup>
-      <Folder Include="Controllers\" />
-      <Folder Include="DTOs\" />
-      <Folder Include="Mappers\" />
-      <Folder Include="Repositories\" />
-      <Folder Include="Services\" />
+        <Content Include="obj\rider.project.model.nuget.info" />
     </ItemGroup>
-
+    
+    <ItemGroup>
+        <ProjectReference Include="..\Api.Shared\Api.Shared.csproj" />
+    </ItemGroup>
 </Project>
