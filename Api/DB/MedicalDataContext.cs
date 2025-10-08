@@ -1,4 +1,4 @@
-﻿using Api.Models;
+﻿using Api.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.DB;

@@ -1,6 +1,6 @@
 ﻿using Api.DTOs;
 using Api.Mappers;
-using Api.Models;
+using Api.Shared.Models;
 using Api.Repositories;
 
 namespace Api.Services;

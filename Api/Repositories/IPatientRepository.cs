@@ -1,4 +1,4 @@
-﻿using Api.Models;
+﻿using Api.Shared.Models;
 
 namespace Api.Repositories;
 

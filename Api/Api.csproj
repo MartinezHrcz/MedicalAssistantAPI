@@ -24,5 +24,12 @@
         <PackageReference Include="SQLitePCLRaw.core" Version="3.0.2" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
     </ItemGroup>
-
+    
+    <ItemGroup>
+        <Content Include="obj\rider.project.model.nuget.info" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\Api.Shared\Api.Shared.csproj" />
+    </ItemGroup>
 </Project>
