@@ -73,4 +73,9 @@ public class PatientRepositroy : IPatientRepository
         _context.Patients.Remove(patientToRemove);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<bool> PatientTajExists(string taj)
+    {
+        return await _context.Patients.AnyAsync(p => p.Taj == taj);
+    }
 }

@@ -2,6 +2,7 @@
 using Api.Mappers;
 using Api.Shared.Models;
 using Api.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
 
@@ -45,22 +46,47 @@ public class PatientService : IPatientService
 
     public async Task<PatientDto> CreatePatientAsync(CreatePatientDto dto)
     {
+        
+        if (await _patientRepository.PatientTajExists(dto.Taj))
+        {
+            throw new InvalidOperationException($"Taj {dto.Taj} is already taken");
+        }
+        
         Patient patient = PatientMapper.ToEntity(dto);
-        await _patientRepository.CreatePatient(patient);
+        try
+        {
+            patient = await _patientRepository.CreatePatient(patient);
+        }
+        catch (DbUpdateException)
+        {
+            throw new  InvalidOperationException($"Taj already taken");
+        }
+
         return PatientMapper.ToDTO(patient);
     }
 
     public async Task<PatientDto> UpdatePatientAsync(int id,UpdatePatientDto dto)
     {
         Patient patient = await _patientRepository.GetPatientById(id);
+
+        if (dto.Taj != patient.Taj && await _patientRepository.PatientTajExists(dto.Taj))
+        {
+            throw new InvalidOperationException($"Taj {dto.Taj} is already taken");
+        }
         
         patient.Name = dto.Name;
-        
         patient.Address = dto.Address;
         patient.Complaints = dto.Complaints;
         patient.Taj = dto.Taj;
-        
-        patient = await _patientRepository.UpdatePatient(patient);
+
+        try
+        {
+            patient = await _patientRepository.UpdatePatient(patient);
+        }
+        catch (DbUpdateException)
+        {
+            throw new InvalidOperationException("Taj already taken!");
+        }
         return PatientMapper.ToDTO(patient);
     }
 
@@ -68,4 +94,5 @@ public class PatientService : IPatientService
     {
         await _patientRepository.DeletePatient(id);
     }
+    
 }
