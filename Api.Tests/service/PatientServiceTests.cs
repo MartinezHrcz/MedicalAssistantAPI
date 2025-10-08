@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Runtime.CompilerServices;
-using Api.DB;
-using Api.DTOs;
+﻿using Api.DTOs;
 using Api.Repositories;
 using Api.Services;
 using Api.Shared.Models;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace Api.Tests.service;
