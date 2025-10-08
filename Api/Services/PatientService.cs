@@ -55,6 +55,7 @@ public class PatientService : IPatientService
         Patient patient = await _patientRepository.GetPatientById(id);
         
         patient.Name = dto.Name;
+        
         patient.Address = dto.Address;
         patient.Complaints = dto.Complaints;
         patient.Taj = dto.Taj;
