@@ -1,6 +1,7 @@
 ﻿using Api.DTOs;
 using Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Controllers;
 
@@ -61,8 +62,16 @@ public class PatientController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<PatientDto>> CreatePatient([FromBody] CreatePatientDto dto)
     {
-        PatientDto patient = await _patientService.CreatePatientAsync(dto);
-        return CreatedAtAction(nameof(GetPatientById), new { id = patient.Id }, patient);
+        try
+        {
+            PatientDto patient = await _patientService.CreatePatientAsync(dto);
+            return CreatedAtAction(nameof(GetPatientById), new { id = patient.Id }, patient);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(ex.Message);
+        }
+        
     }
 
     [HttpPut("{id:int}")]
@@ -76,6 +85,10 @@ public class PatientController : ControllerBase
         catch (KeyNotFoundException)
         {
             return NotFound();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(ex.Message);
         }
     }
 
