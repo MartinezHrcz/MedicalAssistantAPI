@@ -17,7 +17,7 @@ namespace Api.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
 
-            modelBuilder.Entity("Api.Models.Patient", b =>
+            modelBuilder.Entity("Api.Shared.Models.Patient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -36,12 +36,16 @@ namespace Api.Migrations
 
                     b.Property<string>("Taj")
                         .IsRequired()
+                        .HasMaxLength(12)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("TimeOfAdmission")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Taj")
+                        .IsUnique();
 
                     b.ToTable("Patients");
                 });
