@@ -80,7 +80,7 @@ public class PatientServiceTests
         
         _patientRepository.Setup(r => r.GetPatientsByName(name)).ReturnsAsync(patients);
 
-        var result = _patientService.GetPatientByNameAsync(name).Result;
+        var result = await _patientService.GetPatientByNameAsync(name);
         
         Assert.NotNull(result);
         Assert.Equal(2,result.Count());
@@ -190,6 +190,19 @@ public class PatientServiceTests
         Assert.Equal(expectedPatient.Taj, result.Taj);
         
         _patientRepository.Verify(r => r.CreatePatient(It.IsAny<Patient>()), Times.Once);
+    }
+    
+    
+    [Fact]
+    public async Task CreatePatient_TajExists_ThrowsInvalidOperation()
+    {
+        var dto = new CreatePatientDto("Name", "Address", "111-111-111", "Complaint");
+        _patientRepository.Setup(r => r.PatientTajExists(dto.Taj)).ReturnsAsync(true);
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _patientService.CreatePatientAsync(dto));
+
+        _patientRepository.Verify(r => r.PatientTajExists(dto.Taj), Times.Once);
+        _patientRepository.Verify(r => r.CreatePatient(It.IsAny<Patient>()), Times.Never);
     }
 
     [Fact]

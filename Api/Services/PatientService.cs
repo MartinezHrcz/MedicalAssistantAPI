@@ -14,8 +14,7 @@ public class PatientService : IPatientService
     {
         _patientRepository = patientRepository;
     }
-
-
+    
     public async Task<IEnumerable<PatientDto>> GetPatientsAsync()
     {
         IEnumerable<Patient> patients = await _patientRepository.GetAllPatients();
@@ -34,7 +33,7 @@ public class PatientService : IPatientService
     public async Task<IEnumerable<PatientDto>> GetPatientByNameAsync(string name)
     {
         IEnumerable<Patient> patients = await _patientRepository.GetPatientsByName(name);
-        IEnumerable<PatientDto> dtos = patients.Select(PatientMapper.ToDTO);
+        IEnumerable<PatientDto> dtos = patients.Select(PatientMapper.ToDTO).OrderBy(dto => dto.TimeOfAdmission );
         return dtos;
     }
 

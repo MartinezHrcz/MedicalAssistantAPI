@@ -32,6 +32,7 @@ public class PatientRepositroy : IPatientRepository
     {
         List<Patient> patients = await _context.Patients
             .Where(patient => patient.Name == name)
+            .OrderBy(patient => patient.TimeOfAdmission)
             .ToListAsync();
         return patients;
     }
