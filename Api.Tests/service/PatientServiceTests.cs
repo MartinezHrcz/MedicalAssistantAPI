@@ -210,4 +210,16 @@ public class PatientServiceTests
         
         _patientRepository.Verify(r => r.DeletePatient(deleteId), Times.Once);
     }
+    
+    [Fact]
+    public async Task DeletePatientByTajAsync_SuccessfulDelete()
+    {
+        string deleteTaj = "111-111-111";
+        
+        _patientRepository.Setup(r => r.DeletePatientByTaj(deleteTaj)).Returns(Task.CompletedTask);
+        
+        await _patientService.DeletePatientByTaj(deleteTaj);
+        
+        _patientRepository.Verify(r => r.DeletePatientByTaj(deleteTaj), Times.Once);
+    }
 }

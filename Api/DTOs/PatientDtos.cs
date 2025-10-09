@@ -3,7 +3,6 @@
 namespace Api.DTOs;
 
 public record PatientDto(
-    //int Id,
     string Name,
     string? Address,
     string Taj,
