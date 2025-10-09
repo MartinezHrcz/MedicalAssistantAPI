@@ -8,7 +8,7 @@ public class PatientMapper
     public static PatientDto ToDTO(Patient patient)
     {
         return new PatientDto(
-            patient.Id,
+            //patient.Id,
             patient.Name,
             patient.Address,
             patient.Taj,

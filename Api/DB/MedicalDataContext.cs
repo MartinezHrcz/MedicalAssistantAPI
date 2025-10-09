@@ -3,10 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.DB;
 
-public class MedicalDataContext: DbContext
+public class MedicalDataContext(DbContextOptions options) : DbContext(options)
 {
-    public MedicalDataContext(DbContextOptions options) : base(options)
-    { }
-
     public virtual DbSet<Patient> Patients { get; set; }
 }

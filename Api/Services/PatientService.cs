@@ -19,7 +19,7 @@ public class PatientService : IPatientService
     {
         IEnumerable<Patient> patients = await _patientRepository.GetAllPatients();
 
-        IEnumerable<PatientDto> dtos = patients.Select(PatientMapper.ToDTO);
+        IEnumerable<PatientDto> dtos = PatientMapper.ToDtos(patients).OrderBy(p => p.TimeOfAdmission);
         
         return dtos;
     }
@@ -94,4 +94,8 @@ public class PatientService : IPatientService
         await _patientRepository.DeletePatient(id);
     }
     
+    public async Task DeletePatientByTaj(string taj)
+    {
+        await _patientRepository.DeletePatientByTaj(taj);
+    }
 }

@@ -11,5 +11,6 @@ public interface IPatientRepository
     Task<Patient> CreatePatient(Patient patient);
     Task<Patient> UpdatePatient(Patient patient);
     Task DeletePatient(int id);
+    Task DeletePatientByTaj(string taj);
     Task<bool> PatientTajExists(string taj);
 }

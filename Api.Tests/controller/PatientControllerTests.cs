@@ -23,9 +23,9 @@ public class PatientControllerTests
 
         var patientDtos =  new List<PatientDto>
         {
-            new PatientDto(1, "Test Name", "Test Street", "111-111-111", "TestComplaint",
+            new PatientDto( "Test Name", "Test Street", "111-111-111", "TestComplaint",
                 new DateTime(2025, 10, 8, 10, 30, 9)),
-            new PatientDto(1, "Test Name", "Test Street", "111-111-111", "TestComplaint",
+            new PatientDto("Test Name", "Test Street", "111-111-111", "TestComplaint",
                 new DateTime(2025, 10, 8, 10, 31, 10))
         };
 
@@ -45,7 +45,7 @@ public class PatientControllerTests
     public async Task GetPatientById_ReturnsOkWithPatient()
     {
         
-        PatientDto patientDto = new PatientDto(1, "Test Name", "Test Street", "111-111-111", "TestComplaint",
+        PatientDto patientDto = new PatientDto("Test Name", "Test Street", "111-111-111", "TestComplaint",
             new DateTime(2025, 10, 8, 10, 30, 9));
         
         _mockPatientService.Setup(s => s.GetPatientByIdAsync(1)).ReturnsAsync(patientDto);
@@ -63,9 +63,9 @@ public class PatientControllerTests
     {
         var patientDtos =  new List<PatientDto>
         {
-            new PatientDto(1, "Test Name", "Test Street", "111-111-111", "TestComplaint",
+            new PatientDto( "Test Name", "Test Street", "111-111-111", "TestComplaint",
                 new DateTime(2025, 10, 8, 10, 30, 9)),
-            new PatientDto(1, "Test Name", "Test Street", "111-111-111", "TestComplaint",
+            new PatientDto("Test Name", "Test Street", "111-111-111", "TestComplaint",
                 new DateTime(2025, 10, 8, 10, 31, 10))
         };
         string name = "Test Name";
@@ -82,7 +82,7 @@ public class PatientControllerTests
     [Fact]
     public async Task GetPatientByTaj_ReturnsOkWithPatientDto()
     {
-        PatientDto patientDto = new PatientDto(1, "Test Name", "Test Street", "111-111-111", "TestComplaint",
+        PatientDto patientDto = new PatientDto("Test Name", "Test Street", "111-111-111", "TestComplaint",
             new DateTime(2025, 10, 8, 10, 30, 9));
 
         string taj = "111-111-111";
@@ -101,7 +101,7 @@ public class PatientControllerTests
     {
         CreatePatientDto createDto = new CreatePatientDto("Test Name", "Test Street", "111-111-111", "TestComplaint");
         
-        PatientDto patientDto = new PatientDto(1, "Test Name", "Test Street", "111-111-111", "TestComplaint",
+        PatientDto patientDto = new PatientDto("Test Name", "Test Street", "111-111-111", "TestComplaint",
             new DateTime(2025, 10, 8, 10, 30, 9));
         
         _mockPatientService.Setup(s => s.CreatePatientAsync(createDto)).ReturnsAsync(patientDto);
@@ -123,7 +123,7 @@ public class PatientControllerTests
         int updateId = 1;
 
         PatientDto expected =
-            new PatientDto(1, "Update Name", "Update Street", "111-111-121", "TestComplaint",new DateTime(2025, 10, 8, 10, 31, 10));
+            new PatientDto("Update Name", "Update Street", "111-111-121", "TestComplaint",new DateTime(2025, 10, 8, 10, 31, 10));
         
         _mockPatientService.Setup(s=> s.UpdatePatientAsync(updateId,updatePatientDto)).ReturnsAsync(expected);
         

@@ -1,8 +1,6 @@
 ﻿using Api.DTOs;
 using Api.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 namespace Api.Controllers;
 
 [ApiController]
@@ -17,6 +15,7 @@ public class PatientController : ControllerBase
     }
 
     [HttpGet]
+
     public async Task<ActionResult<IEnumerable<PatientDto>>> GetAllPatients()
     {
         IEnumerable<PatientDto> patients = await _patientService.GetPatientsAsync();
@@ -65,7 +64,7 @@ public class PatientController : ControllerBase
         try
         {
             PatientDto patient = await _patientService.CreatePatientAsync(dto);
-            return CreatedAtAction(nameof(GetPatientById), new { id = patient.Id }, patient);
+            return CreatedAtAction(nameof(GetPatientById), patient);
         }
         catch (InvalidOperationException ex)
         {
@@ -98,6 +97,20 @@ public class PatientController : ControllerBase
         try
         {
             await _patientService.DeletePatient(id);
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+    }
+    
+    [HttpDelete("{taj}")]
+    public async Task<IActionResult> DeletePatient(string taj)
+    {
+        try
+        {
+            await _patientService.DeletePatientByTaj(taj);
             return NoContent();
         }
         catch (KeyNotFoundException)
