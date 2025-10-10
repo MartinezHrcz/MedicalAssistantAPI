@@ -64,7 +64,7 @@ public class PatientController : ControllerBase
         try
         {
             PatientDto patient = await _patientService.CreatePatientAsync(dto);
-            return CreatedAtAction(nameof(GetPatientById), patient);
+            return CreatedAtAction(nameof(GetPatientByTaj), new {taj = patient.Taj}, patient);
         }
         catch (InvalidOperationException ex)
         {

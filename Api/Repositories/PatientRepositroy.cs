@@ -74,6 +74,7 @@ public class PatientRepositroy : IPatientRepository
         _context.Patients.Remove(patientToRemove);
         await _context.SaveChangesAsync();
     }
+    
     public async Task DeletePatientByTaj(string taj)
     {
         Patient patientToRemove = await GetPatientByTaj(taj);
