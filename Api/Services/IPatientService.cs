@@ -1,5 +1,5 @@
-﻿using Api.DTOs;
-using Api.Shared.Models;
+﻿using Api.Shared.Models;
+using Api.Shared.Models.DTOs;
 
 namespace Api.Services;
 

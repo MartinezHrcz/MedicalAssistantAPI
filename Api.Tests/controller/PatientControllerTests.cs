@@ -1,6 +1,6 @@
 ﻿using Api.Controllers;
-using Api.DTOs;
 using Api.Services;
+using Api.Shared.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -99,7 +99,7 @@ public class PatientControllerTests
     [Fact]
     public async Task CreatePatient_ReturnsOkWithPatient()
     {
-        CreatePatientDto createDto = new CreatePatientDto("Test Name", "Test Street", "111-111-111", "TestComplaint");
+        CreatePatientDto createDto = new CreatePatientDto("Test Name", "Test Street", "111-111-111", "TestComplaint","Asdfghjklé1.");
         
         PatientDto patientDto = new PatientDto(1,"Test Name", "Test Street", "111-111-111", "TestComplaint",
             new DateTime(2025, 10, 8, 10, 30, 9));

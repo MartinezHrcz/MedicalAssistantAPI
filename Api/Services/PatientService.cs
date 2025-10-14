@@ -1,7 +1,7 @@
-﻿using Api.DTOs;
-using Api.Mappers;
+﻿using Api.Mappers;
 using Api.Shared.Models;
 using Api.Repositories;
+using Api.Shared.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;

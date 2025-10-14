@@ -1,7 +1,7 @@
-﻿using Api.DTOs;
-using Api.Repositories;
+﻿using Api.Repositories;
 using Api.Services;
 using Api.Shared.Models;
+using Api.Shared.Models.DTOs;
 using Moq;
 
 namespace Api.Tests.service;
@@ -174,8 +174,9 @@ public class PatientServiceTests
         (
             "Test Name",
             "111-111-111",
-            "Test Address",
-            "Headache"
+            "Test Address,",
+            "Headache",
+            "Afghjklé1"
         );
         
         _patientRepository.Setup(r=>r.CreatePatient(It.IsAny<Patient>())).ReturnsAsync(expectedPatient);

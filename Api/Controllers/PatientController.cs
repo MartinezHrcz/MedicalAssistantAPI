@@ -1,5 +1,5 @@
-﻿using Api.DTOs;
-using Api.Services;
+﻿using Api.Services;
+using Api.Shared.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
