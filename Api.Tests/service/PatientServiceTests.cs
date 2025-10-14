@@ -32,7 +32,7 @@ public class PatientServiceTests
         Assert.NotNull(result);
         for (int i = 0; i < patients.Count; i++)
         {
-            Assert.Equal(patients[i].Id, result.ElementAt(i).Id);
+            Assert.Equal(patients[i].Id, result.ElementAt(i).id);
             Assert.Equal(patients[i].Name, result.ElementAt(i).Name);
             Assert.Equal(patients[i].Address, result.ElementAt(i).Address);
             Assert.Equal(patients[i].Complaints, result.ElementAt(i).Complaints);
@@ -52,7 +52,7 @@ public class PatientServiceTests
         var result = await _patientService.GetPatientByIdAsync(patient.Id);
         
         Assert.NotNull(result);
-        Assert.Equal(patient.Id, result.Id);
+        Assert.Equal(patient.Id, result.id);
         Assert.Equal(patient.Name, result.Name);
         Assert.Equal(patient.Address, result.Address);
         Assert.Equal(patient.Complaints, result.Complaints);
@@ -86,7 +86,7 @@ public class PatientServiceTests
         Assert.Equal(2,result.Count());
         for (int i = 0; i < patients.Count; i++)
         {
-            Assert.Equal(patients[i].Id, result.ElementAt(i).Id);
+            Assert.Equal(patients[i].Id, result.ElementAt(i).id);
             Assert.Equal(patients[i].Name, result.ElementAt(i).Name);
             Assert.Equal(patients[i].Address, result.ElementAt(i).Address);
             Assert.Equal(patients[i].Complaints, result.ElementAt(i).Complaints);
@@ -111,7 +111,7 @@ public class PatientServiceTests
         var result = await _patientService.GetPatientByTajAsync(Taj);
         Assert.NotNull(result);
         
-        Assert.Equal(patient.Id, result.Id);
+        Assert.Equal(patient.Id, result.id);
         Assert.Equal(patient.Name, result.Name);
         Assert.Equal(patient.Address, result.Address);
         Assert.Equal(patient.Complaints, result.Complaints);
@@ -153,7 +153,7 @@ public class PatientServiceTests
         var result =  await _patientService.UpdatePatientAsync(updateId, updateDTO);
         
         Assert.NotNull(result);
-        Assert.Equal(patient.Id, result.Id);
+        Assert.Equal(patient.Id, result.id);
         Assert.Equal(patient.Name, result.Name);
         Assert.Equal(patient.Address, result.Address);
         Assert.Equal(patient.Complaints, result.Complaints);
@@ -183,7 +183,7 @@ public class PatientServiceTests
         var result = await _patientService.CreatePatientAsync(createPatientDTO);
         
         Assert.NotNull(result);
-        Assert.Equal(expectedPatient.Id, result.Id);
+        Assert.Equal(expectedPatient.Id, result.id);
         Assert.Equal(expectedPatient.Name, result.Name);
         Assert.Equal(expectedPatient.Address, result.Address);
         Assert.Equal(expectedPatient.Complaints, result.Complaints);

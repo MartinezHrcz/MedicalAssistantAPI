@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 
 namespace Api.DTOs;
 
 public record PatientDto(
-    int Id,
+    int id,
     string Name,
     string? Address,
     string Taj,
