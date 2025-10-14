@@ -2,6 +2,7 @@
 using Api.Shared.Models;
 using Api.Repositories;
 using Api.Shared.Models.DTOs;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
@@ -10,9 +11,12 @@ public class PatientService : IPatientService
 {
     private readonly IPatientRepository  _patientRepository;
 
+    private PasswordHasher<Patient> _passwordHasher;
+    
     public PatientService(IPatientRepository patientRepository)
     {
         _patientRepository = patientRepository;
+        _passwordHasher = new PasswordHasher<Patient>();
     }
 
 
@@ -42,6 +46,29 @@ public class PatientService : IPatientService
     {
         Patient patient = await _patientRepository.GetPatientByTaj(taj);
         return PatientMapper.ToDTO(patient);
+    }
+
+    public async Task<PatientDto> RegisterPatientAsync(RegisterPatientDto dto)
+    {
+        if (await _patientRepository.PatientTajExists(dto.Taj))
+        {
+            throw new InvalidOperationException("Patient Taj Already Exists");
+        }
+
+        Patient patient = new Patient
+        {
+            Name = dto.Name,
+            Taj = dto.Taj,
+            Address = dto.Address
+        };
+        patient.PasswordHash = _passwordHasher.HashPassword(patient, dto.Password);
+        patient = await _patientRepository.CreatePatient(patient);
+        return PatientMapper.ToDTO(patient);
+    }
+
+    public async Task<PatientDto> LoginPatientAsync(PatientLoginDto dto)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<PatientDto> CreatePatientAsync(CreatePatientDto dto)

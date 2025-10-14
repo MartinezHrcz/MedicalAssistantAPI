@@ -12,4 +12,6 @@ public interface IPatientService
     Task<PatientDto> CreatePatientAsync(CreatePatientDto dto);
     Task<PatientDto> UpdatePatientAsync(int id,UpdatePatientDto dto);
     Task DeletePatient(int id);
+    Task<PatientDto> RegisterPatientAsync(RegisterPatientDto dto);
+    Task<PatientDto> LoginPatientAsync(PatientLoginDto dto);
 }
