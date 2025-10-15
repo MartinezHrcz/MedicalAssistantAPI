@@ -24,7 +24,6 @@ public class Doctor
     [EmailAddress]
     public string Email { get; set; }
     
-    
     [Required,RegularExpression(pattern: "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage="Password should be atleast 8 characters long, have atleast 1 uppercase 1 lowercase and a special character.")]
     public string PasswordHash {get; set;}
 
