@@ -29,6 +29,18 @@ public class DoctorMapper
         };
     }
 
+    public static Doctor ToModel(RegisterDoctorDto dto)
+    {
+        return new Doctor
+        {
+            Name = dto.Name,
+            Address = dto.Address,
+            Email = dto.Email,
+            PhoneNumber = dto.Phone
+        };
+        
+    }
+
     public static IEnumerable<DoctorDto> ToDTO(IEnumerable<Doctor> doctors)
     {
         return doctors.Select(d => ToDTO(d));

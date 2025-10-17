@@ -30,9 +30,9 @@ public class DoctorService : IDoctorService
         return DoctorMapper.ToDTO(doctor);
     }
 
-    public async Task<DoctorDto> CreateDoctorAsync(RegisterDoctorDto doctor)
+    public async Task<DoctorDto> CreateDoctorAsync(RegisterDoctorDto dto)
     {
-        throw new NotImplementedException();
+        Doctor doctor = DoctorMapper.ToModel(dto);
     }
 
     public async Task<DoctorDto> UpdateDoctorAsync(UpdateDoctorDto doctor)
