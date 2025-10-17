@@ -38,9 +38,17 @@ public class DoctorService : IDoctorService
         return DoctorMapper.ToDTO(doctor);
     }
 
-    public async Task<DoctorDto> UpdateDoctorAsync(UpdateDoctorDto doctor)
+    public async Task<DoctorDto> UpdateDoctorAsync(UpdateDoctorDto dto)
     {
-        throw new NotImplementedException();
+        Doctor doctor = new Doctor
+        {
+            Name = dto.Name,
+            Email = dto.Email,
+            Address = dto.Address,
+            PhoneNumber = dto.Phone
+        };
+        doctor = await _doctorRepository.UpdateDoctor(doctor);
+        return DoctorMapper.ToDTO(doctor);
     }
 
     public async Task<bool> DeleteDoctorAsync(int id)
