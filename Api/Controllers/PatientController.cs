@@ -106,4 +106,28 @@ public class PatientController : ControllerBase
         }
     }
 
+    [HttpPost("login")]
+    public async Task<IActionResult> LoginPatient([FromBody] PatientLoginDto dto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            PatientDto patient = await _patientService.LoginPatientAsync(dto);
+            return Ok(patient);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Unauthorized(ex.Message);
+        }
+    }
+
+
 }
