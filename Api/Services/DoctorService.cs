@@ -76,7 +76,15 @@ public class DoctorService : IDoctorService
 
     public async Task<bool> RemovePatientAsync(int doctorId, int patientId)
     {
-        throw new NotImplementedException();
+        Doctor doctor = await _doctorRepository.GetDoctorById(doctorId)?? throw new KeyNotFoundException("Doctor not found with id: " + doctorId);
+        Patient patient = await _patientRepository.GetPatientById(patientId) ?? throw new KeyNotFoundException("Patient not found with id: " + patientId);
+        if (patient.doctor != null && !doctor.Id.Equals(patient.doctor.Id))
+        {
+            throw new InvalidOperationException("Doctor isn't assigned to this patient");
+        }
+        patient.doctor = null;
+        await _patientRepository.UpdateAsync(patient);
+        return true;
     }
 
     public async Task<DoctorDto> LoginDoctorAsync(LoginDoctorDto doctor)
