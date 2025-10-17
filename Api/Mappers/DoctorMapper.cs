@@ -41,7 +41,7 @@ public class DoctorMapper
         
     }
 
-    public static IEnumerable<DoctorDto> ToDTO(IEnumerable<Doctor> doctors)
+    public static IEnumerable<DoctorDto> ToDto(IEnumerable<Doctor> doctors)
     {
         return doctors.Select(d => ToDTO(d));
     }

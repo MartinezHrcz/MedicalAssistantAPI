@@ -10,18 +10,18 @@ public class DoctorService : IDoctorService
 {
     
     private readonly IDoctorRepository  _doctorRepository;
-    private PasswordHasher<DoctorDto> _passwordHasher;
+    private PasswordHasher<Doctor> _passwordHasher;
 
     public DoctorService(IDoctorRepository doctorRepository)
     {
         _doctorRepository = doctorRepository;
-        _passwordHasher = new PasswordHasher<DoctorDto>();
+        _passwordHasher = new PasswordHasher<Doctor>();
     }
 
     public async Task<IEnumerable<DoctorDto>> GetDoctorsAsync()
     {
         IEnumerable<Doctor> doctors = await _doctorRepository.GetAllDoctors();
-        return DoctorMapper.ToDTO(doctors);
+        return DoctorMapper.ToDto(doctors);
     }
 
     public async Task<DoctorDto?> GetDoctorAsync(int id)
@@ -33,6 +33,9 @@ public class DoctorService : IDoctorService
     public async Task<DoctorDto> CreateDoctorAsync(RegisterDoctorDto dto)
     {
         Doctor doctor = DoctorMapper.ToModel(dto);
+        doctor.PasswordHash = _passwordHasher.HashPassword(doctor, dto.Password);
+        doctor = await _doctorRepository.CreateDoctor(doctor);  
+        return DoctorMapper.ToDTO(doctor);
     }
 
     public async Task<DoctorDto> UpdateDoctorAsync(UpdateDoctorDto doctor)
