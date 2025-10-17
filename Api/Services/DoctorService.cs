@@ -11,7 +11,7 @@ public class DoctorService : IDoctorService
     
     private readonly IDoctorRepository  _doctorRepository;
     private readonly IPatientRepository _patientRepository;
-    private PasswordHasher<Doctor> _passwordHasher;
+    private readonly PasswordHasher<Doctor> _passwordHasher;
 
     public DoctorService(IDoctorRepository doctorRepository, IPatientRepository patientRepository)
     {

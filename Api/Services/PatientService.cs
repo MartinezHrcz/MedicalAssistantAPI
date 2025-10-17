@@ -68,7 +68,14 @@ public class PatientService : IPatientService
 
     public async Task<PatientDto> LoginPatientAsync(PatientLoginDto dto)
     {
-        throw new NotImplementedException();
+        Patient patient =  await _patientRepository.GetPatientByTaj(dto.Taj) 
+                           ?? throw new KeyNotFoundException("Patient Taj Not Found");
+        PasswordVerificationResult passwordValid = _passwordHasher.VerifyHashedPassword(patient, patient.PasswordHash, dto.Password);
+        if (passwordValid == PasswordVerificationResult.Failed)
+        {
+            throw new UnauthorizedAccessException("Passwords do not match");
+        }
+        return PatientMapper.ToDTO(patient);
     }
 
     public async Task<PatientDto> CreatePatientAsync(CreatePatientDto dto)
