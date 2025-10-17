@@ -34,6 +34,10 @@ public class DoctorService : IDoctorService
 
     public async Task<DoctorDto> CreateDoctorAsync(RegisterDoctorDto dto)
     {
+        if (await _doctorRepository.DoctorEmailExist(dto.Email))
+        {
+            throw new InvalidOperationException($"Email {dto.Email} already exists!");
+        }
         Doctor doctor = DoctorMapper.ToModel(dto);
         doctor.PasswordHash = _passwordHasher.HashPassword(doctor, dto.Password);
         doctor = await _doctorRepository.CreateDoctor(doctor);  
@@ -87,8 +91,15 @@ public class DoctorService : IDoctorService
         return true;
     }
 
-    public async Task<DoctorDto> LoginDoctorAsync(LoginDoctorDto doctor)
+    public async Task<DoctorDto> LoginDoctorAsync(LoginDoctorDto dto)
     {
-        throw new NotImplementedException();
+        Doctor doctor = await _doctorRepository.GetDoctorByEmail(dto.Email) ?? throw new KeyNotFoundException("Doctor with email not found!");
+        PasswordVerificationResult passwordValid =
+            _passwordHasher.VerifyHashedPassword(doctor, doctor.PasswordHash, dto.Password);
+        if (passwordValid == PasswordVerificationResult.Failed)
+        {
+            throw new UnauthorizedAccessException("Passwords do not match!");
+        }
+        return DoctorMapper.ToDTO(doctor);
     }
 }
