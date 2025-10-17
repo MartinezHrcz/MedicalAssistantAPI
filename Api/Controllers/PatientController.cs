@@ -62,6 +62,10 @@ public class PatientController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<PatientDto>> CreatePatient([FromBody] CreatePatientDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         try
         {
             PatientDto patient = await _patientService.CreatePatientAsync(dto);
@@ -77,6 +81,10 @@ public class PatientController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<ActionResult<PatientDto>> UpdatePatient(int id, [FromBody] UpdatePatientDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         try
         {
             PatientDto patient = await _patientService.UpdatePatientAsync(id, dto);

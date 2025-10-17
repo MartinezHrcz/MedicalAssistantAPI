@@ -3,6 +3,7 @@ using Api.Shared.Models;
 using Api.Shared.Models.DTOs;
 using Api.Mappers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Api.Services;
 
@@ -26,7 +27,7 @@ public class DoctorService : IDoctorService
         return DoctorMapper.ToDto(doctors);
     }
 
-    public async Task<DoctorDto?> GetDoctorAsync(int id)
+    public async Task<DoctorDto> GetDoctorAsync(int id)
     {
         Doctor doctor = await _doctorRepository.GetDoctorById(id) ??  throw new KeyNotFoundException();
         return DoctorMapper.ToDTO(doctor);

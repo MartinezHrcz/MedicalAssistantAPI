@@ -5,7 +5,7 @@ namespace Api.Services;
 public interface IDoctorService
 {
     Task<IEnumerable<DoctorDto>> GetDoctorsAsync();
-    Task<DoctorDto?> GetDoctorAsync(int id);
+    Task<DoctorDto> GetDoctorAsync(int id);
     Task<DoctorDto> CreateDoctorAsync(RegisterDoctorDto doctor);
     Task<DoctorDto> UpdateDoctorAsync(UpdateDoctorDto doctor);
     Task<bool> DeleteDoctorAsync(int id);
