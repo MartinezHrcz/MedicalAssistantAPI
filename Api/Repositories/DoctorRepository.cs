@@ -24,7 +24,7 @@ public class DoctorRepository: IDoctorRepository
 
     public async Task<Doctor?> GetDoctorById(int id)
     {
-        return await _context.Doctors.FindAsync(id) ?? throw new KeyNotFoundException($"Doctor with id {id} not found");
+        return await _context.Doctors.FindAsync(id);
     }
 
     public async Task<IEnumerable<Doctor>> GetDoctorsByName(string name)
@@ -53,11 +53,16 @@ public class DoctorRepository: IDoctorRepository
         return toUpdate;
     }
 
-    public async Task DeleteDoctor(int id)
+    public async Task<bool> DeleteDoctor(int id)
     {
-        Doctor doctortToRemove = await _context.Doctors.FindAsync(id)??  throw new KeyNotFoundException($"Doctor with id {id} not found");
-        _context.Doctors.Remove(doctortToRemove);
+        Doctor doctorToRemove = await _context.Doctors.FindAsync(id);
+        if (doctorToRemove == null)
+        {
+            return false;
+        }
+        _context.Doctors.Remove(doctorToRemove);
         await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<bool> DoctorEmailExist(string email)

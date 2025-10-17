@@ -12,4 +12,5 @@ public interface IPatientRepository
     Task<Patient> UpdatePatient(Patient patient);
     Task DeletePatient(int id);
     Task<bool> PatientTajExists(string taj);
+    Task<IEnumerable<Patient>> GetPatientsByDoctor(int doctorId);
 }

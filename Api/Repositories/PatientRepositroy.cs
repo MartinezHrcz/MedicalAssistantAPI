@@ -78,4 +78,10 @@ public class PatientRepositroy : IPatientRepository
     {
         return await _context.Patients.AnyAsync(p => p.Taj == taj);
     }
+
+    public async Task<IEnumerable<Patient>> GetPatientsByDoctor(int doctorId)
+    {
+        IEnumerable<Patient> patients = await _context.Patients.Where(p=>p.doctor != null && p.doctor.Id.Equals(doctorId)).ToListAsync();
+        return patients;
+    }
 }

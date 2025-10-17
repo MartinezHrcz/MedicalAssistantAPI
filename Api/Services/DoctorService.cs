@@ -10,11 +10,13 @@ public class DoctorService : IDoctorService
 {
     
     private readonly IDoctorRepository  _doctorRepository;
+    private readonly IPatientRepository _patientRepository;
     private PasswordHasher<Doctor> _passwordHasher;
 
-    public DoctorService(IDoctorRepository doctorRepository)
+    public DoctorService(IDoctorRepository doctorRepository, IPatientRepository patientRepository)
     {
         _doctorRepository = doctorRepository;
+        _patientRepository = patientRepository;
         _passwordHasher = new PasswordHasher<Doctor>();
     }
 
@@ -53,12 +55,14 @@ public class DoctorService : IDoctorService
 
     public async Task<bool> DeleteDoctorAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _doctorRepository.DeleteDoctor(id);
     }
 
     public async Task<IEnumerable<PatientDto>> GetPatientsOfDoctor(int id)
     {
-        throw new NotImplementedException();
+        Doctor doctor = await _doctorRepository.GetDoctorById(id)  ?? throw new KeyNotFoundException("Doctor not found with id: "+ id);
+        IEnumerable<Patient> patients = await _patientRepository.GetPatientsByDoctor(id);
+        return PatientMapper.ToDtos(patients);
     }
 
     public async Task<bool> AddPatientAsync(int doctorId, int patientId)
