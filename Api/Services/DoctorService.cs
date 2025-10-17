@@ -67,7 +67,11 @@ public class DoctorService : IDoctorService
 
     public async Task<bool> AddPatientAsync(int doctorId, int patientId)
     {
-        throw new NotImplementedException();
+        Doctor doctor = await _doctorRepository.GetDoctorById(doctorId)?? throw new KeyNotFoundException("Doctor not found with id: " + doctorId);
+        Patient patient = await _patientRepository.GetPatientById(patientId) ?? throw new KeyNotFoundException("Patient not found with id: " + patientId);
+        patient.doctor =  doctor;
+        await _patientRepository.UpdateAsync(patient);
+        return true;
     }
 
     public async Task<bool> RemovePatientAsync(int doctorId, int patientId)

@@ -10,6 +10,7 @@ public interface IPatientRepository
     Task<Patient> GetPatientByTaj(string taj);
     Task<Patient> CreatePatient(Patient patient);
     Task<Patient> UpdatePatient(Patient patient);
+    Task UpdateAsync(Patient patient);
     Task DeletePatient(int id);
     Task<bool> PatientTajExists(string taj);
     Task<IEnumerable<Patient>> GetPatientsByDoctor(int doctorId);
