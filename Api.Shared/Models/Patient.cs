@@ -26,5 +26,9 @@ public class Patient
     public string? Complaints { get; set; } 
     
     public DateTime TimeOfAdmission { get; set; } =  DateTime.Now;
+
+    [Required]
+    public string PasswordHash {get; set; }
     
+    public Doctor? doctor { get; set;}
 }

@@ -1,5 +1,5 @@
-﻿using Api.DTOs;
-using Api.Shared.Models;
+﻿using Api.Shared.Models;
+using Api.Shared.Models.DTOs;
 
 namespace Api.Services;
 
@@ -12,5 +12,6 @@ public interface IPatientService
     Task<PatientDto> CreatePatientAsync(CreatePatientDto dto);
     Task<PatientDto> UpdatePatientAsync(int id,UpdatePatientDto dto);
     Task DeletePatient(int id);
-    Task DeletePatientByTaj(string taj);
+    Task<PatientDto> RegisterPatientAsync(RegisterPatientDto dto);
+    Task<PatientDto> LoginPatientAsync(PatientLoginDto dto);
 }

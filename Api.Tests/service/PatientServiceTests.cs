@@ -1,7 +1,7 @@
-﻿using Api.DTOs;
-using Api.Repositories;
+﻿using Api.Repositories;
 using Api.Services;
 using Api.Shared.Models;
+using Api.Shared.Models.DTOs;
 using Moq;
 
 namespace Api.Tests.service;
@@ -32,6 +32,7 @@ public class PatientServiceTests
         Assert.NotNull(result);
         for (int i = 0; i < patients.Count; i++)
         {
+            Assert.Equal(patients[i].Id, result.ElementAt(i).id);
             Assert.Equal(patients[i].Name, result.ElementAt(i).Name);
             Assert.Equal(patients[i].Address, result.ElementAt(i).Address);
             Assert.Equal(patients[i].Complaints, result.ElementAt(i).Complaints);
@@ -51,6 +52,7 @@ public class PatientServiceTests
         var result = await _patientService.GetPatientByIdAsync(patient.Id);
         
         Assert.NotNull(result);
+        Assert.Equal(patient.Id, result.id);
         Assert.Equal(patient.Name, result.Name);
         Assert.Equal(patient.Address, result.Address);
         Assert.Equal(patient.Complaints, result.Complaints);
@@ -78,12 +80,13 @@ public class PatientServiceTests
         
         _patientRepository.Setup(r => r.GetPatientsByName(name)).ReturnsAsync(patients);
 
-        var result = await _patientService.GetPatientByNameAsync(name);
+        var result = _patientService.GetPatientByNameAsync(name).Result;
         
         Assert.NotNull(result);
         Assert.Equal(2,result.Count());
         for (int i = 0; i < patients.Count; i++)
         {
+            Assert.Equal(patients[i].Id, result.ElementAt(i).id);
             Assert.Equal(patients[i].Name, result.ElementAt(i).Name);
             Assert.Equal(patients[i].Address, result.ElementAt(i).Address);
             Assert.Equal(patients[i].Complaints, result.ElementAt(i).Complaints);
@@ -108,6 +111,7 @@ public class PatientServiceTests
         var result = await _patientService.GetPatientByTajAsync(Taj);
         Assert.NotNull(result);
         
+        Assert.Equal(patient.Id, result.id);
         Assert.Equal(patient.Name, result.Name);
         Assert.Equal(patient.Address, result.Address);
         Assert.Equal(patient.Complaints, result.Complaints);
@@ -149,6 +153,7 @@ public class PatientServiceTests
         var result =  await _patientService.UpdatePatientAsync(updateId, updateDTO);
         
         Assert.NotNull(result);
+        Assert.Equal(patient.Id, result.id);
         Assert.Equal(patient.Name, result.Name);
         Assert.Equal(patient.Address, result.Address);
         Assert.Equal(patient.Complaints, result.Complaints);
@@ -169,8 +174,9 @@ public class PatientServiceTests
         (
             "Test Name",
             "111-111-111",
-            "Test Address",
-            "Headache"
+            "Test Address,",
+            "Headache",
+            "Afghjklé1"
         );
         
         _patientRepository.Setup(r=>r.CreatePatient(It.IsAny<Patient>())).ReturnsAsync(expectedPatient);
@@ -178,25 +184,13 @@ public class PatientServiceTests
         var result = await _patientService.CreatePatientAsync(createPatientDTO);
         
         Assert.NotNull(result);
+        Assert.Equal(expectedPatient.Id, result.id);
         Assert.Equal(expectedPatient.Name, result.Name);
         Assert.Equal(expectedPatient.Address, result.Address);
         Assert.Equal(expectedPatient.Complaints, result.Complaints);
         Assert.Equal(expectedPatient.Taj, result.Taj);
         
         _patientRepository.Verify(r => r.CreatePatient(It.IsAny<Patient>()), Times.Once);
-    }
-    
-    
-    [Fact]
-    public async Task CreatePatient_TajExists_ThrowsInvalidOperation()
-    {
-        var dto = new CreatePatientDto("Name", "Address", "111-111-111", "Complaint");
-        _patientRepository.Setup(r => r.PatientTajExists(dto.Taj)).ReturnsAsync(true);
-
-        await Assert.ThrowsAsync<InvalidOperationException>(() => _patientService.CreatePatientAsync(dto));
-
-        _patientRepository.Verify(r => r.PatientTajExists(dto.Taj), Times.Once);
-        _patientRepository.Verify(r => r.CreatePatient(It.IsAny<Patient>()), Times.Never);
     }
 
     [Fact]
@@ -209,17 +203,5 @@ public class PatientServiceTests
         await _patientService.DeletePatient(deleteId);
         
         _patientRepository.Verify(r => r.DeletePatient(deleteId), Times.Once);
-    }
-    
-    [Fact]
-    public async Task DeletePatientByTajAsync_SuccessfulDelete()
-    {
-        string deleteTaj = "111-111-111";
-        
-        _patientRepository.Setup(r => r.DeletePatientByTaj(deleteTaj)).Returns(Task.CompletedTask);
-        
-        await _patientService.DeletePatientByTaj(deleteTaj);
-        
-        _patientRepository.Verify(r => r.DeletePatientByTaj(deleteTaj), Times.Once);
     }
 }

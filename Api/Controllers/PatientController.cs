@@ -1,6 +1,8 @@
-﻿using Api.DTOs;
-using Api.Services;
+﻿using Api.Services;
+using Api.Shared.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 namespace Api.Controllers;
 
 [ApiController]
@@ -15,7 +17,6 @@ public class PatientController : ControllerBase
     }
 
     [HttpGet]
-
     public async Task<ActionResult<IEnumerable<PatientDto>>> GetAllPatients()
     {
         IEnumerable<PatientDto> patients = await _patientService.GetPatientsAsync();
@@ -61,10 +62,14 @@ public class PatientController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<PatientDto>> CreatePatient([FromBody] CreatePatientDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         try
         {
             PatientDto patient = await _patientService.CreatePatientAsync(dto);
-            return CreatedAtAction(nameof(GetPatientByTaj), new {taj = patient.Taj}, patient);
+            return CreatedAtAction(nameof(GetPatientById), new { id = patient.id }, patient);
         }
         catch (InvalidOperationException ex)
         {
@@ -76,6 +81,10 @@ public class PatientController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<ActionResult<PatientDto>> UpdatePatient(int id, [FromBody] UpdatePatientDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         try
         {
             PatientDto patient = await _patientService.UpdatePatientAsync(id, dto);
@@ -104,19 +113,29 @@ public class PatientController : ControllerBase
             return NotFound();
         }
     }
-    
-    [HttpDelete("{taj}")]
-    public async Task<IActionResult> DeletePatient(string taj)
+
+    [HttpPost("login")]
+    public async Task<IActionResult> LoginPatient([FromBody] PatientLoginDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         try
         {
-            await _patientService.DeletePatientByTaj(taj);
-            return NoContent();
+            PatientDto patient = await _patientService.LoginPatientAsync(dto);
+            return Ok(patient);
         }
-        catch (KeyNotFoundException)
+        catch (KeyNotFoundException ex)
         {
-            return NotFound();
+            return NotFound(ex.Message);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Unauthorized(ex.Message);
         }
     }
+
 
 }

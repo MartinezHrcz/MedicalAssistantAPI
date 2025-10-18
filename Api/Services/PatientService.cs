@@ -1,7 +1,8 @@
-﻿using Api.DTOs;
-using Api.Mappers;
+﻿using Api.Mappers;
 using Api.Shared.Models;
 using Api.Repositories;
+using Api.Shared.Models.DTOs;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
@@ -10,9 +11,12 @@ public class PatientService : IPatientService
 {
     private readonly IPatientRepository  _patientRepository;
 
+    private PasswordHasher<Patient> _passwordHasher;
+    
     public PatientService(IPatientRepository patientRepository)
     {
         _patientRepository = patientRepository;
+        _passwordHasher = new PasswordHasher<Patient>();
     }
     
     public async Task<IEnumerable<PatientDto>> GetPatientsAsync()
@@ -40,6 +44,36 @@ public class PatientService : IPatientService
     public async Task<PatientDto> GetPatientByTajAsync(string taj)
     {
         Patient patient = await _patientRepository.GetPatientByTaj(taj);
+        return PatientMapper.ToDTO(patient);
+    }
+
+    public async Task<PatientDto> RegisterPatientAsync(RegisterPatientDto dto)
+    {
+        if (await _patientRepository.PatientTajExists(dto.Taj))
+        {
+            throw new InvalidOperationException("Patient Taj Already Exists");
+        }
+
+        Patient patient = new Patient
+        {
+            Name = dto.Name,
+            Taj = dto.Taj,
+            Address = dto.Address
+        };
+        patient.PasswordHash = _passwordHasher.HashPassword(patient, dto.Password);
+        patient = await _patientRepository.CreatePatient(patient);
+        return PatientMapper.ToDTO(patient);
+    }
+
+    public async Task<PatientDto> LoginPatientAsync(PatientLoginDto dto)
+    {
+        Patient patient =  await _patientRepository.GetPatientByTaj(dto.Taj) 
+                           ?? throw new KeyNotFoundException("Patient Taj Not Found");
+        PasswordVerificationResult passwordValid = _passwordHasher.VerifyHashedPassword(patient, patient.PasswordHash, dto.Password);
+        if (passwordValid == PasswordVerificationResult.Failed)
+        {
+            throw new UnauthorizedAccessException("Passwords do not match");
+        }
         return PatientMapper.ToDTO(patient);
     }
 

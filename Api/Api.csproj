@@ -33,4 +33,8 @@
     <ItemGroup>
         <ProjectReference Include="..\Api.Shared\Api.Shared.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Migrations\" />
+    </ItemGroup>
 </Project>
