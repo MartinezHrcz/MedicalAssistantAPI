@@ -33,6 +33,11 @@ public class DoctorService : IDoctorService
         return DoctorMapper.ToDTO(doctor);
     }
 
+    public async Task<IEnumerable<DoctorDto>> GetDoctorsByNameAsync(string name)
+    {
+        return DoctorMapper.ToDto(await _doctorRepository.GetDoctorsByName(name));
+    }
+
     public async Task<DoctorDto> CreateDoctorAsync(RegisterDoctorDto dto)
     {
         if (await _doctorRepository.DoctorEmailExist(dto.Email))
@@ -45,10 +50,11 @@ public class DoctorService : IDoctorService
         return DoctorMapper.ToDTO(doctor);
     }
 
-    public async Task<DoctorDto> UpdateDoctorAsync(UpdateDoctorDto dto)
+    public async Task<DoctorDto> UpdateDoctorAsync(int id,UpdateDoctorDto dto)
     {
         Doctor doctor = new Doctor
         {
+            Id = id,
             Name = dto.Name,
             Email = dto.Email,
             Address = dto.Address,
@@ -70,16 +76,15 @@ public class DoctorService : IDoctorService
         return PatientMapper.ToDtos(patients);
     }
 
-    public async Task<bool> AddPatientAsync(int doctorId, int patientId)
+    public async Task AddPatientAsync(int doctorId, int patientId)
     {
         Doctor doctor = await _doctorRepository.GetDoctorById(doctorId)?? throw new KeyNotFoundException("Doctor not found with id: " + doctorId);
         Patient patient = await _patientRepository.GetPatientById(patientId) ?? throw new KeyNotFoundException("Patient not found with id: " + patientId);
         patient.doctor =  doctor;
         await _patientRepository.UpdateAsync(patient);
-        return true;
     }
 
-    public async Task<bool> RemovePatientAsync(int doctorId, int patientId)
+    public async Task RemovePatientAsync(int doctorId, int patientId)
     {
         Doctor doctor = await _doctorRepository.GetDoctorById(doctorId)?? throw new KeyNotFoundException("Doctor not found with id: " + doctorId);
         Patient patient = await _patientRepository.GetPatientById(patientId) ?? throw new KeyNotFoundException("Patient not found with id: " + patientId);
@@ -89,7 +94,6 @@ public class DoctorService : IDoctorService
         }
         patient.doctor = null;
         await _patientRepository.UpdateAsync(patient);
-        return true;
     }
 
     public async Task<DoctorDto> LoginDoctorAsync(LoginDoctorDto dto)

@@ -6,11 +6,12 @@ public interface IDoctorService
 {
     Task<IEnumerable<DoctorDto>> GetDoctorsAsync();
     Task<DoctorDto> GetDoctorAsync(int id);
+    Task<IEnumerable<DoctorDto>> GetDoctorsByNameAsync(string name);
     Task<DoctorDto> CreateDoctorAsync(RegisterDoctorDto doctor);
-    Task<DoctorDto> UpdateDoctorAsync(UpdateDoctorDto doctor);
+    Task<DoctorDto> UpdateDoctorAsync(int id,UpdateDoctorDto doctor);
     Task<bool> DeleteDoctorAsync(int id);
     Task<IEnumerable<PatientDto>> GetPatientsOfDoctor(int id);
-    Task<bool> AddPatientAsync(int doctorId, int patientId);
-    Task<bool> RemovePatientAsync(int doctorId, int patientId);
+    Task AddPatientAsync(int doctorId, int patientId);
+    Task RemovePatientAsync(int doctorId, int patientId);
     Task<DoctorDto> LoginDoctorAsync(LoginDoctorDto doctor);
 }
