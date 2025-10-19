@@ -7,12 +7,27 @@ public class PatientMapper
 {
     public static PatientDto ToDTO(Patient patient)
     {
+        if (patient.doctor == null)
+        {
+            return new PatientDto(
+                patient.Id,
+                patient.Name,
+                patient.Address,
+                patient.Taj,
+                patient.Complaints,
+                null,
+                patient.TimeOfAdmission
+            );
+        }
+
         return new PatientDto(
-            patient.Name,
-            patient.Address,
-            patient.Taj,
-            patient.Complaints,
-            patient.TimeOfAdmission
+            id:patient.Id,
+            Name:patient.Name,
+            Address:patient.Address,
+            Taj:patient.Taj,
+            Complaints:patient.Complaints,
+            doctorId:patient.doctor.Id,
+            TimeOfAdmission:patient.TimeOfAdmission
             );
     }
     

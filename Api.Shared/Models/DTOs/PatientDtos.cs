@@ -8,6 +8,7 @@ public record PatientDto(
     string? Address,
     string Taj,
     string? Complaints,
+    int? doctorId,
     DateTime TimeOfAdmission
     );
 

@@ -86,6 +86,8 @@ public class PatientService : IPatientService
         }
         
         Patient patient = PatientMapper.ToEntity(dto);
+        
+        patient.PasswordHash = _passwordHasher.HashPassword(patient, dto.Password);
         try
         {
             patient = await _patientRepository.CreatePatient(patient);

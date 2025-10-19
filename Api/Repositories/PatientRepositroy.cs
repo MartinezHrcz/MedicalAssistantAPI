@@ -17,6 +17,7 @@ public class PatientRepositroy : IPatientRepository
     public async Task<IEnumerable<Patient>> GetAllPatients()
     {
         return await _context.Patients
+            .Include(p => p.doctor)
             .OrderBy(patient => patient.TimeOfAdmission)
             .ToListAsync();
     }
@@ -61,10 +62,10 @@ public class PatientRepositroy : IPatientRepository
         patientToUpdate.Address = patient.Address;
         patientToUpdate.Complaints  = patient.Complaints;
         patientToUpdate.Taj = patient.Taj;
+        patientToUpdate.doctor = patient.doctor;
         
         _context.Patients.Update(patientToUpdate);
         await _context.SaveChangesAsync();
-        
         return patientToUpdate;
     }
 
@@ -84,7 +85,7 @@ public class PatientRepositroy : IPatientRepository
 
     public async Task<bool> PatientTajExists(string taj)
     {
-        return await _context.Patients.AnyAsync(p => p.Taj == taj);
+        return await _context.Patients.AnyAsync(p => p.Taj.Equals(taj));
     }
 
     public async Task UpdateAsync(Patient patient)
