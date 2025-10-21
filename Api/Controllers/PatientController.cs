@@ -115,7 +115,7 @@ public class PatientController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> LoginPatient([FromBody] PatientLoginDto dto)
+    public async Task<ActionResult<PatientAuthResponsDto>> LoginPatient([FromBody] PatientLoginDto dto)
     {
         if (!ModelState.IsValid)
         {
@@ -124,7 +124,7 @@ public class PatientController : ControllerBase
 
         try
         {
-            PatientDto patient = await _patientService.LoginPatientAsync(dto);
+            PatientAuthResponsDto patient = await _patientService.LoginPatientAsync(dto);
             return Ok(patient);
         }
         catch (KeyNotFoundException ex)

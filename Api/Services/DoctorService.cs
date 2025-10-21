@@ -3,7 +3,9 @@ using Api.Shared.Models;
 using Api.Shared.Models.DTOs;
 using Api.Mappers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
 
@@ -13,11 +15,13 @@ public class DoctorService : IDoctorService
     private readonly IDoctorRepository  _doctorRepository;
     private readonly IPatientRepository _patientRepository;
     private readonly PasswordHasher<Doctor> _passwordHasher;
+    private readonly IJwtService _jwtService;
 
-    public DoctorService(IDoctorRepository doctorRepository, IPatientRepository patientRepository)
+    public DoctorService(IDoctorRepository doctorRepository, IPatientRepository patientRepository, IJwtService jwtService)
     {
         _doctorRepository = doctorRepository;
         _patientRepository = patientRepository;
+        _jwtService = jwtService;
         _passwordHasher = new PasswordHasher<Doctor>();
     }
 
@@ -98,15 +102,17 @@ public class DoctorService : IDoctorService
         await _patientRepository.UpdateAsync(patient);
     }
 
-    public async Task<DoctorDto> LoginDoctorAsync(LoginDoctorDto dto)
+    public async Task<DoctorAuthResponseDto> LoginDoctorAsync([FromBody]LoginDoctorDto dto)
     {
         Doctor doctor = await _doctorRepository.GetDoctorByEmail(dto.Email) ?? throw new KeyNotFoundException("Doctor with email not found!");
+        
         PasswordVerificationResult passwordValid =
             _passwordHasher.VerifyHashedPassword(doctor, doctor.PasswordHash, dto.Password);
         if (passwordValid == PasswordVerificationResult.Failed)
         {
             throw new UnauthorizedAccessException("Passwords do not match!");
         }
-        return DoctorMapper.ToDTO(doctor);
+        var token = _jwtService.GenerateToken(doctor);
+        return new DoctorAuthResponseDto(DoctorMapper.ToDTO(doctor), token);
     }
 }

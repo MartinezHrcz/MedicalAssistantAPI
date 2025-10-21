@@ -13,9 +13,12 @@ public class PatientService : IPatientService
 
     private PasswordHasher<Patient> _passwordHasher;
     
-    public PatientService(IPatientRepository patientRepository)
+    private readonly IJwtService _jwtService;
+    
+    public PatientService(IPatientRepository patientRepository, IJwtService jwtService)
     {
         _patientRepository = patientRepository;
+        _jwtService = jwtService;
         _passwordHasher = new PasswordHasher<Patient>();
     }
     
@@ -65,7 +68,7 @@ public class PatientService : IPatientService
         return PatientMapper.ToDTO(patient);
     }
 
-    public async Task<PatientDto> LoginPatientAsync(PatientLoginDto dto)
+    public async Task<PatientAuthResponsDto> LoginPatientAsync(PatientLoginDto dto)
     {
         Patient patient =  await _patientRepository.GetPatientByTaj(dto.Taj) 
                            ?? throw new KeyNotFoundException("Patient Taj Not Found");
@@ -74,7 +77,8 @@ public class PatientService : IPatientService
         {
             throw new UnauthorizedAccessException("Passwords do not match");
         }
-        return PatientMapper.ToDTO(patient);
+        var token = _jwtService.GenerateToken(patient);
+        return new PatientAuthResponsDto(PatientMapper.ToDTO(patient),  token);
     }
 
     public async Task<PatientDto> CreatePatientAsync(CreatePatientDto dto)

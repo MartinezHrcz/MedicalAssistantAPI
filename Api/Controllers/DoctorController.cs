@@ -1,11 +1,13 @@
 ﻿using Api.Services;
 using Api.Shared.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
 [ApiController]
-[Route("api/doctor/[controller]")]
+[Authorize(Roles = "doctor")]
+[Route("api/doctor")]
 public class DoctorController : ControllerBase
 {
     private readonly IDoctorService _doctorService;
@@ -36,14 +38,14 @@ public class DoctorController : ControllerBase
         }
     }
 
-    [HttpGet($"/name/{{name}}")]
+    [HttpGet($"byname/{{name}}")]
     public async Task<ActionResult<List<DoctorDto>>> GetAllDoctorsByName(string name)
     {
         IEnumerable<DoctorDto> doctors = await _doctorService.GetDoctorsByNameAsync(name);
         return Ok(doctors);
     }
 
-    [HttpGet("/my_patients/{id:int}")]
+    [HttpGet("my_patients/{id:int}")]
     public async Task<ActionResult<List<PatientDto>>> GetAllPatientsOfDoctor(int id)
     {
         IEnumerable<PatientDto> patientDtos = await _doctorService.GetPatientsOfDoctor(id);
@@ -92,7 +94,7 @@ public class DoctorController : ControllerBase
         
     }
 
-    [HttpPut("/addpatient/{doctorId:int}-{patientId:int}")]
+    [HttpPut("addpatient/{doctorId:int}-{patientId:int}")]
     public async Task<ActionResult> AddPatient(int doctorId, int patientId)
     {
         try
@@ -107,9 +109,10 @@ public class DoctorController : ControllerBase
         
     }
 
-    [HttpPost("/login")]
-    public async Task<ActionResult<DoctorDto>> LoginDoctor([FromBody] LoginDoctorDto dto)
+    [HttpPost("login")]
+    public async Task<ActionResult<DoctorAuthResponseDto>> LoginDoctor([FromBody] LoginDoctorDto dto)
     {
+        
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -117,7 +120,7 @@ public class DoctorController : ControllerBase
 
         try
         {
-            DoctorDto doctor = await _doctorService.LoginDoctorAsync(dto);
+            DoctorAuthResponseDto doctor = await _doctorService.LoginDoctorAsync(dto);
             return Ok(doctor);
         }
         catch (InvalidOperationException ex)
@@ -130,7 +133,7 @@ public class DoctorController : ControllerBase
         }
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("delete/{id:int}")]
     public async Task<ActionResult> DeleteDoctor(int id)
     {
         try

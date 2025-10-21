@@ -2,6 +2,7 @@
 using Api.Services;
 using Api.Shared.Models;
 using Api.Shared.Models.DTOs;
+using Microsoft.Extensions.Configuration;
 using Moq;
 
 namespace Api.Tests.service;
@@ -9,12 +10,15 @@ namespace Api.Tests.service;
 public class PatientServiceTests
 {
     private readonly Mock<IPatientRepository> _patientRepository;
+    
     private readonly IPatientService _patientService;
+    
+    private readonly Mock<IJwtService> _jwtService;
 
     public PatientServiceTests()
     {
         _patientRepository = new Mock<IPatientRepository>();
-        _patientService = new PatientService(_patientRepository.Object);
+        _patientService = new PatientService(_patientRepository.Object,  _jwtService.Object);
     }
     
     [Fact]

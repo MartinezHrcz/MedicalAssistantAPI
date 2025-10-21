@@ -27,4 +27,6 @@ public class Doctor
     [Required,RegularExpression(pattern: "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage="Password should be atleast 8 characters long, have atleast 1 uppercase 1 lowercase and a special character.")]
     public string PasswordHash {get; set;}
 
+    public string Role => "Doctor";
+
 }

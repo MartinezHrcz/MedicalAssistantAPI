@@ -13,5 +13,5 @@ public interface IDoctorService
     Task<IEnumerable<PatientDto>> GetPatientsOfDoctor(int id);
     Task AddPatientAsync(int doctorId, int patientId);
     Task RemovePatientAsync(int doctorId, int patientId);
-    Task<DoctorDto> LoginDoctorAsync(LoginDoctorDto doctor);
+    Task<DoctorAuthResponseDto> LoginDoctorAsync(LoginDoctorDto doctor);
 }
