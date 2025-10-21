@@ -1,11 +1,13 @@
 ﻿using Api.Services;
 using Api.Shared.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Patient,Doctor")]
 [Route("api/[controller]")]
 public class PatientController : ControllerBase
 {
@@ -59,6 +61,7 @@ public class PatientController : ControllerBase
         }
     }
 
+    [AllowAnonymous]
     [HttpPost]
     public async Task<ActionResult<PatientDto>> CreatePatient([FromBody] CreatePatientDto dto)
     {
@@ -114,6 +117,7 @@ public class PatientController : ControllerBase
         }
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<PatientAuthResponsDto>> LoginPatient([FromBody] PatientLoginDto dto)
     {

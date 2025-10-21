@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers;
 
 [ApiController]
-[Authorize(Roles = "doctor")]
+[Authorize(Roles = "Doctor")]
 [Route("api/doctor")]
 public class DoctorController : ControllerBase
 {
@@ -52,6 +52,7 @@ public class DoctorController : ControllerBase
         return Ok(patientDtos);
     }
     
+    [AllowAnonymous]
     [HttpPost]
     public async Task<ActionResult<DoctorDto>> CreateDoctor([FromBody] RegisterDoctorDto dto)
     {
@@ -109,6 +110,7 @@ public class DoctorController : ControllerBase
         
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<DoctorAuthResponseDto>> LoginDoctor([FromBody] LoginDoctorDto dto)
     {
@@ -130,6 +132,10 @@ public class DoctorController : ControllerBase
         catch (UnauthorizedAccessException ex)
         {
             return Unauthorized(ex.Message);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
     }
 
