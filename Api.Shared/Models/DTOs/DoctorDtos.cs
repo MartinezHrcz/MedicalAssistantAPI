@@ -39,7 +39,6 @@ public record RegisterDoctorDto(
      , RegularExpression(@"^[A-Za-zÀ-ž\ \s'-]{2,50}$",  ErrorMessage = "Name should only contain letters, spaces or hypens!")]
     string Name,
     string? Address,
-    [Phone]
     string Phone,
     [EmailAddress]
     string Email,

@@ -56,6 +56,6 @@ public record PatientLoginDto(
 );
 
 public record PatientAuthResponsDto(
-    PatientDto patientDto,
-    string token
+    PatientDto patient,
+    string Token
 );

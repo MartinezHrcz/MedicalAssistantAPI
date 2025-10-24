@@ -8,7 +8,7 @@ namespace Api.Controllers;
 
 [ApiController]
 [Authorize(Roles = "Patient,Doctor")]
-[Route("api/[controller]")]
+[Route("api/patient")]
 public class PatientController : ControllerBase
 {
     private readonly IPatientService _patientService;
