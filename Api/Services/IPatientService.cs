@@ -14,4 +14,5 @@ public interface IPatientService
     Task DeletePatient(int id);
     Task<PatientDto> RegisterPatientAsync(RegisterPatientDto dto);
     Task<PatientAuthResponsDto> LoginPatientAsync(PatientLoginDto dto);
+    Task<PatientMedicationDto> GetPatientMedicationAsync(string taj);
 }

@@ -63,6 +63,7 @@ public class PatientRepositroy : IPatientRepository
         patientToUpdate.Complaints  = patient.Complaints;
         patientToUpdate.Taj = patient.Taj;
         patientToUpdate.doctor = patient.doctor;
+        patientToUpdate.medications = patient.medications;
         
         _context.Patients.Update(patientToUpdate);
         await _context.SaveChangesAsync();

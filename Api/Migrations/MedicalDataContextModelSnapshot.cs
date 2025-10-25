@@ -48,6 +48,30 @@ namespace Api.Migrations
                     b.ToTable("Doctors");
                 });
 
+            modelBuilder.Entity("Api.Shared.Models.Medication", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Medication");
+                });
+
             modelBuilder.Entity("Api.Shared.Models.Patient", b =>
                 {
                     b.Property<int>("Id")
@@ -90,6 +114,13 @@ namespace Api.Migrations
                     b.ToTable("Patients");
                 });
 
+            modelBuilder.Entity("Api.Shared.Models.Medication", b =>
+                {
+                    b.HasOne("Api.Shared.Models.Patient", null)
+                        .WithMany("medications")
+                        .HasForeignKey("PatientId");
+                });
+
             modelBuilder.Entity("Api.Shared.Models.Patient", b =>
                 {
                     b.HasOne("Api.Shared.Models.Doctor", "doctor")
@@ -97,6 +128,11 @@ namespace Api.Migrations
                         .HasForeignKey("doctorId");
 
                     b.Navigation("doctor");
+                });
+
+            modelBuilder.Entity("Api.Shared.Models.Patient", b =>
+                {
+                    b.Navigation("medications");
                 });
 #pragma warning restore 612, 618
         }

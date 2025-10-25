@@ -81,6 +81,17 @@ public class PatientService : IPatientService
         return new PatientAuthResponsDto(PatientMapper.ToDTO(patient),  token);
     }
 
+    public async Task<PatientMedicationDto> GetPatientMedicationAsync(string taj)
+    {
+        if (!(await _patientRepository.PatientTajExists(taj)))
+        {
+            throw new KeyNotFoundException("Taj Not Found");
+        }
+        Patient patient =  await _patientRepository.GetPatientByTaj(taj);
+        PatientMedicationDto medication = PatientMapper.toMedication(patient);
+        return medication;
+    }
+
     public async Task<PatientDto> CreatePatientAsync(CreatePatientDto dto)
     {
         

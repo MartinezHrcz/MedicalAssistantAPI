@@ -141,5 +141,18 @@ public class PatientController : ControllerBase
         }
     }
 
+    [HttpGet("/medication/{taj}")]
+    public async Task<ActionResult<PatientMedicationDto>> GetMedication(string taj)
+    {
+        try
+        {
+            return Ok(await _patientService.GetPatientMedicationAsync(taj));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        
+    }
 
 }

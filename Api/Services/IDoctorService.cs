@@ -14,4 +14,6 @@ public interface IDoctorService
     Task AddPatientAsync(int doctorId, int patientId);
     Task RemovePatientAsync(int doctorId, int patientId);
     Task<DoctorAuthResponseDto> LoginDoctorAsync(LoginDoctorDto doctor);
+    Task AddPatientMedication(string taj, string title ,string medication);
+    Task RemovePatientMedication(string taj,Guid medication);
 }

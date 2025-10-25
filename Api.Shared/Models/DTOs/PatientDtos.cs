@@ -12,6 +12,12 @@ public record PatientDto(
     DateTime TimeOfAdmission
     );
 
+public record PatientMedicationDto(
+    int Id,
+    string Taj,
+    List<Medication> Medications
+);
+
 public record CreatePatientDto(
     [Required, MaxLength(50)
      , RegularExpression(@"^[A-Za-zÀ-ž\ \s'-]{2,50}$",  ErrorMessage = "Name should only contain letters, spaces or hypens!")]

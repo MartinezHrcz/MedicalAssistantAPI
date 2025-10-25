@@ -58,5 +58,13 @@ public class PatientMapper
         };
     }
 
+    public static PatientMedicationDto toMedication(Patient patient)
+    {
+        return new PatientMedicationDto(
+            patient.Id,
+            patient.Taj,
+            patient.medications
+            );
+    }
 
 }

@@ -31,5 +31,8 @@ public class Patient
     public string PasswordHash {get; set; }
     
     public Doctor? doctor { get; set;}
+
+    public List<Medication> medications { get; set;} = new();
+    
     public string Role => "Patient";
 }

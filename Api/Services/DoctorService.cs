@@ -2,6 +2,7 @@
 using Api.Shared.Models;
 using Api.Shared.Models.DTOs;
 using Api.Mappers;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -114,5 +115,24 @@ public class DoctorService : IDoctorService
         }
         var token = _jwtService.GenerateToken(doctor);
         return new DoctorAuthResponseDto(DoctorMapper.ToDTO(doctor), token);
+    }
+
+    public async Task AddPatientMedication(string taj, string title, string nameofmed)
+    {
+        Patient patient = await _patientRepository.GetPatientByTaj(taj) ??  throw new KeyNotFoundException();
+        Medication medication = new Medication
+        {
+            title = title,
+            name = nameofmed
+        };
+        patient.medications.Add(medication);
+        await _patientRepository.UpdatePatient(patient);
+    }
+
+    public async Task RemovePatientMedication(string taj, Guid medicationId)
+    {
+        Patient patient = await _patientRepository.GetPatientByTaj(taj) ??  throw new KeyNotFoundException();
+        patient.medications =  patient.medications.Where(m => !m.id.Equals(medicationId)).ToList();
+        await _patientRepository.UpdatePatient(patient);
     }
 }

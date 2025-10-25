@@ -170,4 +170,32 @@ public class DoctorController : ControllerBase
             return NotFound(ex.Message);
         }
     }
+
+    [HttpPut("medication/{patientTaj}-{title}-{medication}")]
+    public async Task<ActionResult> AddMedication(string patientTaj, string title, string medication)
+    {
+        try
+        {
+            await _doctorService.AddPatientMedication(patientTaj, title, medication);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpDelete("medication/{patientTaj}-{medicationId}")]
+    public async Task<ActionResult> RemoveMedication(string patientTaj, Guid medicationId)
+    {
+        try
+        {
+            await _doctorService.RemovePatientMedication(patientTaj, medicationId);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }
