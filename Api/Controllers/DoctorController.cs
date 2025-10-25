@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers;
 
 [ApiController]
-[Authorize(Roles = "Doctor")]
+[Authorize]
 [Route("api/doctor")]
 public class DoctorController : ControllerBase
 {
@@ -17,6 +17,7 @@ public class DoctorController : ControllerBase
         _doctorService = doctorService;
     }
 
+    [Authorize(Roles = "Doctor")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<DoctorDto>>> GetAllDoctors()
     {
@@ -39,6 +40,7 @@ public class DoctorController : ControllerBase
         }
     }
 
+    [Authorize(Roles = "Doctor")]
     [HttpGet($"byname/{{name}}")]
     public async Task<ActionResult<List<DoctorDto>>> GetAllDoctorsByName(string name)
     {
@@ -46,6 +48,7 @@ public class DoctorController : ControllerBase
         return Ok(doctors);
     }
 
+    [Authorize(Roles = "Doctor")]
     [HttpGet("my_patients/{id:int}")]
     public async Task<ActionResult<List<PatientDto>>> GetAllPatientsOfDoctor(int id)
     {
@@ -53,6 +56,7 @@ public class DoctorController : ControllerBase
         return Ok(patientDtos);
     }
     
+    [Authorize(Roles = "Doctor")]
     [AllowAnonymous]
     [HttpPost]
     public async Task<ActionResult<DoctorDto>> CreateDoctor([FromBody] RegisterDoctorDto dto)
@@ -71,7 +75,7 @@ public class DoctorController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize(Roles = "Doctor")]
     [HttpPost("{id:int}")]
     public async Task<ActionResult<DoctorDto>> UpdateDoctor(int id,[FromBody] UpdateDoctorDto dto)
     {
@@ -95,7 +99,7 @@ public class DoctorController : ControllerBase
         }
         
     }
-
+    [Authorize(Roles = "Doctor")]
     [HttpPut("addpatient/{doctorId:int}-{patientId:int}")]
     public async Task<ActionResult> AddPatient(int doctorId, int patientId)
     {
@@ -110,7 +114,7 @@ public class DoctorController : ControllerBase
         }
         
     }
-
+    [Authorize(Roles = "Doctor")]
     [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<DoctorAuthResponseDto>> LoginDoctor([FromBody] LoginDoctorDto dto)
@@ -139,7 +143,7 @@ public class DoctorController : ControllerBase
             return NotFound(ex.Message);
         }
     }
-
+    [Authorize(Roles = "Doctor")]
     [HttpDelete("delete/{id:int}")]
     public async Task<ActionResult> DeleteDoctor(int id)
     {
@@ -153,7 +157,7 @@ public class DoctorController : ControllerBase
             return NotFound();
         }
     }
-
+    [Authorize(Roles = "Doctor")]
     [HttpPut("removepatient/{doctorId:int}-{patientId:int}")]
     public async Task<ActionResult> RemovePatient(int doctorId, int patientId)
     {
@@ -171,7 +175,7 @@ public class DoctorController : ControllerBase
             return NotFound(ex.Message);
         }
     }
-
+    [Authorize(Roles = "Doctor")]
     [HttpPut("medication/{patientTaj}-{title}-{medication}")]
     public async Task<ActionResult> AddMedication(string patientTaj, string title, string medication)
     {
@@ -185,7 +189,7 @@ public class DoctorController : ControllerBase
             return BadRequest(e.Message);
         }
     }
-
+    [Authorize(Roles = "Doctor")]
     [HttpDelete("medication/{patientTaj}-{medicationId}")]
     public async Task<ActionResult> RemoveMedication(string patientTaj, Guid medicationId)
     {
