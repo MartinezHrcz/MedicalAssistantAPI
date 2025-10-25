@@ -32,7 +32,7 @@ public class Patient
     
     public Doctor? doctor { get; set;}
 
-    public List<Medication> medications { get; set;} = new();
+    public List<Medication> Medications { get; set;} = new();
     
     public string Role => "Patient";
 }

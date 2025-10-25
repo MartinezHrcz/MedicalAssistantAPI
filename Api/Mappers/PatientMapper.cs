@@ -17,6 +17,7 @@ public class PatientMapper
                 patient.Complaints,
                 null,
                 patient.TimeOfAdmission
+                
             );
         }
 
@@ -63,7 +64,7 @@ public class PatientMapper
         return new PatientMedicationDto(
             patient.Id,
             patient.Taj,
-            patient.medications
+            patient.Medications
             );
     }
 

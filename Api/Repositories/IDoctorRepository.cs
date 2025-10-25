@@ -12,4 +12,6 @@ public interface IDoctorRepository
     Task<bool> DeleteDoctor(int id);
     Task<bool> DoctorEmailExist(string email);
     Task<Doctor?> GetDoctorByEmail(string email);
+    Task AddMedication(Medication medication);
+    Task RemoveMedication(Medication medication);
 }

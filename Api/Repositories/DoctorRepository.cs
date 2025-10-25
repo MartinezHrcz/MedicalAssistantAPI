@@ -70,6 +70,18 @@ public class DoctorRepository: IDoctorRepository
         return await _context.Doctors.AnyAsync(doctor => doctor.Email == email);
     }
 
+    public async Task AddMedication(Medication medication)
+    {
+        _context.Medications.Add(medication);
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task RemoveMedication(Medication medication)
+    {
+        _context.Medications.Remove(medication);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<Doctor?> GetDoctorByEmail(string email)
     {
         return await _context.Doctors.FirstOrDefaultAsync(doctor => doctor.Email == email);

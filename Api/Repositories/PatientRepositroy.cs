@@ -41,7 +41,7 @@ public class PatientRepositroy : IPatientRepository
 
     public async Task<Patient> GetPatientByTaj(string taj)
     {
-        Patient patient = await _context.Patients
+        Patient patient = await _context.Patients.Include(p=>p.Medications)
             .FirstOrDefaultAsync(p => p.Taj == taj) ?? throw new KeyNotFoundException($"Patient not found with TAJ: {taj}");
         
         return patient;
@@ -64,7 +64,7 @@ public class PatientRepositroy : IPatientRepository
         patientToUpdate.Complaints  = patient.Complaints;
         patientToUpdate.Taj = patient.Taj;
         patientToUpdate.doctor = patient.doctor;
-        patientToUpdate.medications = patient.medications;
+        patientToUpdate.Medications = patient.Medications;
         
         _context.Patients.Update(patientToUpdate);
         await _context.SaveChangesAsync();

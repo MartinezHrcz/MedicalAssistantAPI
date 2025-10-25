@@ -124,14 +124,16 @@ public class DoctorService : IDoctorService
             title = title,
             name = nameofmed
         };
-        patient.medications.Add(medication);
+        await _doctorRepository.AddMedication(medication);
+        patient.Medications.Add(medication);
         await _patientRepository.UpdatePatient(patient);
+
     }
 
     public async Task RemovePatientMedication(string taj, Guid medicationId)
     {
         Patient patient = await _patientRepository.GetPatientByTaj(taj) ??  throw new KeyNotFoundException();
-        patient.medications =  patient.medications.Where(m => !m.id.Equals(medicationId)).ToList();
+        patient.Medications =  patient.Medications.Where(m => !m.id.Equals(medicationId)).ToList();
         await _patientRepository.UpdatePatient(patient);
     }
 }

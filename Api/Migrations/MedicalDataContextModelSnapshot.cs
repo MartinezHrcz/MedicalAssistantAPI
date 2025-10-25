@@ -69,7 +69,7 @@ namespace Api.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Medication");
+                    b.ToTable("Medications");
                 });
 
             modelBuilder.Entity("Api.Shared.Models.Patient", b =>
@@ -117,7 +117,7 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Shared.Models.Medication", b =>
                 {
                     b.HasOne("Api.Shared.Models.Patient", null)
-                        .WithMany("medications")
+                        .WithMany("Medications")
                         .HasForeignKey("PatientId");
                 });
 
@@ -132,7 +132,7 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.Shared.Models.Patient", b =>
                 {
-                    b.Navigation("medications");
+                    b.Navigation("Medications");
                 });
 #pragma warning restore 612, 618
         }
