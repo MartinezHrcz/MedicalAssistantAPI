@@ -88,7 +88,6 @@ public class DoctorService : IDoctorService
         patient.doctor =  doctor;
         patient.doctor.Id = doctorId;
         await _patientRepository.UpdatePatient(patient);
-        
     }
 
     public async Task RemovePatientAsync(int doctorId, int patientId)

@@ -24,6 +24,7 @@ public class DoctorController : ControllerBase
         return Ok(doctors);
     }
 
+    [Authorize(Roles = "Doctor,Patient")]
     [HttpGet("{id:int}")]
     public async Task<ActionResult<DoctorDto>> GetDoctorById(int id)
     {

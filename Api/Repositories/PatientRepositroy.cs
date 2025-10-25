@@ -24,8 +24,9 @@ public class PatientRepositroy : IPatientRepository
 
     public async Task<Patient> GetPatientById(int id)
     {
-        Patient patient = await _context.Patients.FindAsync(id) 
-                          ?? throw new KeyNotFoundException($"Patient not found with id {id}");
+        Patient patient = await _context.Patients.Include(p=>p.doctor).FirstOrDefaultAsync(p=>p.Id == id); 
+                         // ?? throw new KeyNotFoundException($"Patient not found with id {id}");
+        if (patient == null){ throw new KeyNotFoundException("Patient not found"); }
         return patient;
     }
 
