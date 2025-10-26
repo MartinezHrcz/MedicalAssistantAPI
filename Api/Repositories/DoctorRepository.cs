@@ -53,6 +53,14 @@ public class DoctorRepository: IDoctorRepository
         return toUpdate;
     }
 
+    public async Task<Doctor> UpdateDoctorPassword(string password, Doctor doctor)
+    {
+        Doctor toUpdate = await _context.Doctors.FindAsync(doctor.Id)??  throw new KeyNotFoundException($"Doctor with id {doctor.Id} not found");
+        toUpdate.PasswordHash =  password;
+        await _context.SaveChangesAsync();
+        return toUpdate;
+    }
+
     public async Task<bool> DeleteDoctor(int id)
     {
         Doctor? doctorToRemove = await _context.Doctors.FindAsync(id);

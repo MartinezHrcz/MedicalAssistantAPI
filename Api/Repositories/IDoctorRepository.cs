@@ -9,6 +9,7 @@ public interface IDoctorRepository
     Task<IEnumerable<Doctor>> GetDoctorsByName(string name);
     Task<Doctor> CreateDoctor(Doctor doctor);
     Task<Doctor> UpdateDoctor(Doctor doctor);
+    Task<Doctor> UpdateDoctorPassword(string password, Doctor doctor);
     Task<bool> DeleteDoctor(int id);
     Task<bool> DoctorEmailExist(string email);
     Task<Doctor?> GetDoctorByEmail(string email);
