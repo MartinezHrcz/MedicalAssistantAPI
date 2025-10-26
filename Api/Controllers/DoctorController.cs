@@ -77,7 +77,7 @@ public class DoctorController : ControllerBase
     }
 
     [Authorize(Roles = "Doctor")]
-    [HttpPut("/pwd_update/{id:int}")]
+    [HttpPut("pwd_update/{id:int}")]
     public async Task<ActionResult<DoctorDto>> UpdateDoctorAsync(int id, [FromBody] PasswordUpdateDto dto)
     {
         if (!ModelState.IsValid)

@@ -84,6 +84,10 @@ public class PatientRepositroy : IPatientRepository
     public async Task DeletePatient(int id)
     {
         Patient patientToRemove = await _context.Patients.FindAsync(id)?? throw new KeyNotFoundException($"Patient not found with id {id}");
+        var patientMeds = _context.Medications.AsEnumerable().Where(medication => medication.patient == patientToRemove).ToList();
+        _context.Medications.RemoveRange(_context.Medications.AsEnumerable().Where(medication => medication.patient == null).ToList());
+        _context.Medications.RemoveRange(patientMeds);
+        patientToRemove.doctor = null;
         _context.Patients.Remove(patientToRemove);
         await _context.SaveChangesAsync();
     }
@@ -91,6 +95,12 @@ public class PatientRepositroy : IPatientRepository
     public async Task DeletePatientByTaj(string taj)
     {
         Patient patientToRemove = await GetPatientByTaj(taj);
+        var patientMeds = await _context.Medications.Where(medication => medication.patient.Taj == taj).ToListAsync();
+        foreach (var medication in patientMeds)
+        {
+            _context.Medications.Remove(medication);
+        }
+        patientToRemove.doctor = null;
         _context.Patients.Remove(patientToRemove);
         await _context.SaveChangesAsync();
     }
