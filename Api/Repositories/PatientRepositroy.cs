@@ -7,6 +7,7 @@ namespace Api.Repositories;
 public class PatientRepositroy : IPatientRepository
 {
 
+
     private readonly MedicalDataContext _context;
     
     public PatientRepositroy(MedicalDataContext context)
@@ -24,7 +25,7 @@ public class PatientRepositroy : IPatientRepository
 
     public async Task<Patient> GetPatientById(int id)
     {
-        Patient patient = await _context.Patients.Include(p=>p.doctor).FirstOrDefaultAsync(p=>p.Id == id); 
+        Patient? patient = await _context.Patients.Include(p=>p.doctor).FirstOrDefaultAsync(p=>p.Id == id); 
                          // ?? throw new KeyNotFoundException($"Patient not found with id {id}");
         if (patient == null){ throw new KeyNotFoundException("Patient not found"); }
         return patient;
@@ -69,6 +70,15 @@ public class PatientRepositroy : IPatientRepository
         _context.Patients.Update(patientToUpdate);
         await _context.SaveChangesAsync();
         return patientToUpdate;
+    }
+    
+    public async Task<bool> UpdatePatientPassword(int id, string password)
+    {
+        Patient patientToUpdate = await _context.Patients.FindAsync(id) ??  throw new KeyNotFoundException($"Patient not found with id {id}");
+        patientToUpdate.PasswordHash = password;
+        _context.Patients.Update(patientToUpdate);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task DeletePatient(int id)

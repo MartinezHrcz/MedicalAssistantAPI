@@ -102,6 +102,30 @@ public class PatientController : ControllerBase
             return Conflict(ex.Message);
         }
     }
+    
+    [HttpPut("pwdupdate/{id:int}")]
+    public async Task<ActionResult<DoctorDto>> UpdateDoctorAsync(int id, [FromBody] PasswordUpdateDto dto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            if (!await _patientService.UpdatePatientPasswordAsync(id, dto))
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+    
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeletePatient(int id)

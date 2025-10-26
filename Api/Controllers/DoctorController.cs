@@ -75,6 +75,31 @@ public class DoctorController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    [Authorize(Roles = "Doctor")]
+    [HttpPut("/pwd_update/{id:int}")]
+    public async Task<ActionResult<DoctorDto>> UpdateDoctorAsync(int id, [FromBody] PasswordUpdateDto dto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            if (!await _doctorService.UpdateDoctorPasswordAsync(id, dto))
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
     [Authorize(Roles = "Doctor")]
     [HttpPost("{id:int}")]
     public async Task<ActionResult<DoctorDto>> UpdateDoctor(int id,[FromBody] UpdateDoctorDto dto)

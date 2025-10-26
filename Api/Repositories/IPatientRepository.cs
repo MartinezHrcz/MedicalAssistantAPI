@@ -1,4 +1,5 @@
 ﻿using Api.Shared.Models;
+using Api.Shared.Models.DTOs;
 
 namespace Api.Repositories;
 
@@ -10,6 +11,7 @@ public interface IPatientRepository
     Task<Patient> GetPatientByTaj(string taj);
     Task<Patient> CreatePatient(Patient patient);
     Task<Patient> UpdatePatient(Patient patient);
+    Task<bool> UpdatePatientPassword(int id, string password);
     Task UpdateAsync(Patient patient);
     Task DeletePatient(int id);
     Task DeletePatientByTaj(string taj);

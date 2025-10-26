@@ -140,6 +140,18 @@ public class PatientService : IPatientService
         return PatientMapper.ToDTO(patient);
     }
 
+    public async Task<bool> UpdatePatientPasswordAsync(int id, PasswordUpdateDto dto)
+    {
+        Patient patient = await _patientRepository.GetPatientById(id) ?? throw new KeyNotFoundException();
+        if (_passwordHasher.VerifyHashedPassword(patient, patient.PasswordHash, dto.OldPassword) == PasswordVerificationResult.Failed)
+        {
+            throw new  InvalidOperationException("Password doesn't match!");
+        }
+        
+        bool compeleted = await _patientRepository.UpdatePatientPassword(id,_passwordHasher.HashPassword(patient,dto.NewPassword));
+        return compeleted;    
+    }
+
     public async Task DeletePatient(int id)
     {
         await _patientRepository.DeletePatient(id);
