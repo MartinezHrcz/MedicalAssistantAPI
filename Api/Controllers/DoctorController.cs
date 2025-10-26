@@ -176,7 +176,7 @@ public class DoctorController : ControllerBase
         }
     }
     [Authorize(Roles = "Doctor")]
-    [HttpPut("medication/{patientTaj}-{title}-{medication}")]
+    [HttpPut("medication/{patientTaj}_{title}_{medication}")]
     public async Task<ActionResult> AddMedication(string patientTaj, string title, string medication)
     {
         try
@@ -190,7 +190,7 @@ public class DoctorController : ControllerBase
         }
     }
     [Authorize(Roles = "Doctor")]
-    [HttpDelete("medication/{patientTaj}-{medicationId}")]
+    [HttpDelete("medication/{patientTaj}_{medicationId}")]
     public async Task<ActionResult> RemoveMedication(string patientTaj, Guid medicationId)
     {
         try

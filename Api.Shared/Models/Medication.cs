@@ -12,6 +12,5 @@ public record Medication
     public string title { get; set;}
     [Required]
     public string name { get; set;}
-    
     public Patient patient;
 }

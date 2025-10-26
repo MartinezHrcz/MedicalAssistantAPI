@@ -55,11 +55,18 @@ public class DoctorRepository: IDoctorRepository
 
     public async Task<bool> DeleteDoctor(int id)
     {
-        Doctor doctorToRemove = await _context.Doctors.FindAsync(id);
+        Doctor? doctorToRemove = await _context.Doctors.FindAsync(id);
+        var patients = _context.Patients.Where(p=> p.doctor.Id == id).ToList();
+        foreach (var patient in patients)
+        {
+            patient.doctor = null;
+        }
+        
         if (doctorToRemove == null)
         {
             return false;
         }
+        
         _context.Doctors.Remove(doctorToRemove);
         await _context.SaveChangesAsync();
         return true;
