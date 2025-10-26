@@ -69,6 +69,18 @@ public class DoctorService : IDoctorService
         return DoctorMapper.ToDTO(doctor);
     }
 
+    public async Task<bool> UpdateDoctorPasswordAsync(int id, PasswordUpdateDto dto)
+    {
+        Doctor doctor = await _doctorRepository.GetDoctorById(id) ?? throw new KeyNotFoundException();
+        if (_passwordHasher.VerifyHashedPassword(doctor, doctor.PasswordHash, dto.OldPassword) == PasswordVerificationResult.Failed)
+        {
+            throw new  InvalidOperationException("Password doesn't match!");
+        }
+        
+        doctor = await _doctorRepository.UpdateDoctorPassword(_passwordHasher.HashPassword(doctor,dto.NewPassword), doctor);
+        return true;
+    }
+
     public async Task<bool> DeleteDoctorAsync(int id)
     {
         return await _doctorRepository.DeleteDoctor(id);
